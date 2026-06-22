@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão de Alunos — PRW2</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="topbar">
+        <h1>🎓 Gestão de Alunos</h1>
+        <span id="statusLogin" class="badge badge-off">Não autenticado</span>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Autenticação</h2>
+            <div class="form-grid">
+                <input id="authUser" type="text" placeholder="Usuário (e-mail)" />
+                <input id="authPass" type="password" placeholder="Senha" />
+            </div>
+            <div class="botoes">
+                <button id="btnRegister" class="btn btn-secondary">Registrar</button>
+                <button id="btnLogin" class="btn btn-primary">Login</button>
+                <button id="btnLogout" class="btn btn-ghost">Sair</button>
+            </div>
+            <p id="authMsg" class="msg"></p>
+        </section>
+
+        <section class="card">
+            <h2 id="formTitulo">Cadastrar aluno</h2>
+            <div class="form-grid">
+                <input id="alId" type="number" placeholder="id (inteiro)" />
+                <input id="alNome" type="text" placeholder="nome" />
+                <input id="alRa" type="text" placeholder="ra" />
+                <input id="alNota1" type="number" step="0.1" placeholder="nota1" />
+                <input id="alNota2" type="number" step="0.1" placeholder="nota2" />
+            </div>
+            <div class="botoes">
+                <button id="btnSalvar" class="btn btn-primary">Salvar aluno</button>
+                <button id="btnLimpar" class="btn btn-ghost">Limpar</button>
+            </div>
+            <p id="formMsg" class="msg"></p>
+        </section>
+
+        <section class="card">
+            <h2>Consultas</h2>
+            <div class="botoes">
+                <button id="btnListar" class="btn btn-secondary">Listar alunos</button>
+                <button id="btnMedias" class="btn btn-secondary">Médias</button>
+                <button id="btnAprovados" class="btn btn-secondary">Aprovados</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Resultado</h2>
+            <div id="tabelaWrap" class="tabela-wrap">
+                <p class="msg">Faça login e clique em "Listar alunos".</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

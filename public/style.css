@@ -1,0 +1,113 @@
+:root {
+    --verde: #1f8a70;
+    --verde-escuro: #156b56;
+    --cinza: #f4f6f8;
+    --texto: #243b53;
+    --borda: #d9e2ec;
+    --vermelho: #c0392b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: var(--cinza);
+    color: var(--texto);
+}
+
+.topbar {
+    background: var(--verde);
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar h1 { margin: 0; font-size: 22px; }
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.badge-off { background: rgba(255,255,255,.25); }
+.badge-on  { background: #2ecc71; }
+
+main {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 0 16px;
+    display: grid;
+    gap: 18px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.card h2 { margin: 0 0 14px; font-size: 17px; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+input {
+    padding: 10px 12px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    font-size: 14px;
+}
+input:focus { outline: 2px solid var(--verde); border-color: var(--verde); }
+
+.botoes { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+}
+.btn:hover { opacity: .9; }
+.btn-primary   { background: var(--verde); color: #fff; }
+.btn-secondary { background: #e7f3ef; color: var(--verde-escuro); }
+.btn-ghost     { background: transparent; color: var(--texto); border: 1px solid var(--borda); }
+
+.msg { font-size: 14px; margin: 10px 0 0; min-height: 18px; }
+.msg.ok  { color: var(--verde-escuro); }
+.msg.err { color: var(--vermelho); }
+
+.tabela-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px; border-bottom: 1px solid var(--borda); text-align: left; }
+th { background: #f0f4f8; }
+
+.acoes button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 6px;
+}
+
+.pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.pill-ok  { background: #d5f5e3; color: #1e8449; }
+.pill-no  { background: #fdecea; color: var(--vermelho); }
