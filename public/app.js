@@ -15,9 +15,8 @@ function setStatus() {
     }
 }
 
-function showMsg(el, texto, ok = true) {
-    el.textContent = texto;
-    el.className = "msg " + (ok ? "ok" : "err");
+function mostrarResposta(status, data) {
+    $("respostaJson").textContent = "Status: " + status + "\n\n" + JSON.stringify(data, null, 4);
 }
 
 async function registrar() {
@@ -28,7 +27,7 @@ async function registrar() {
         body: JSON.stringify(body)
     });
     const data = await r.json();
-    showMsg($("authMsg"), data.message, r.ok);
+    mostrarResposta(r.status, data);
 }
 
 async function login() {
@@ -39,13 +38,11 @@ async function login() {
         body: JSON.stringify(body)
     });
     const data = await r.json();
+    mostrarResposta(r.status, data);
     if (r.ok) {
         token = data.jwt;
         localStorage.setItem("jwt", token);
         setStatus();
-        showMsg($("authMsg"), data.message, true);
-    } else {
-        showMsg($("authMsg"), data.message, false);
     }
 }
 
@@ -53,7 +50,7 @@ function logout() {
     token = null;
     localStorage.removeItem("jwt");
     setStatus();
-    showMsg($("authMsg"), "Você saiu.", true);
+    mostrarResposta(200, { info: "Sessão encerrada (apenas no cliente)." });
 }
 
 async function apiAuth(rota, opcoes = {}) {
@@ -86,7 +83,6 @@ function limparForm() {
     $("btnSalvar").dataset.modo = "criar";
     $("alId").disabled = false;
     $("cardForm").classList.remove("form-edicao");
-    showMsg($("formMsg"), "");
 }
 
 async function salvarAluno() {
@@ -95,18 +91,12 @@ async function salvarAluno() {
 
     let resp;
     if (modo === "editar") {
-        resp = await apiAuth("/alunos/" + aluno.id, {
-            method: "PUT",
-            body: JSON.stringify(aluno)
-        });
+        resp = await apiAuth("/alunos/" + aluno.id, { method: "PUT", body: JSON.stringify(aluno) });
     } else {
-        resp = await apiAuth("/alunos", {
-            method: "POST",
-            body: JSON.stringify(aluno)
-        });
+        resp = await apiAuth("/alunos", { method: "POST", body: JSON.stringify(aluno) });
     }
 
-    showMsg($("formMsg"), resp.data.message || "OK", resp.ok);
+    mostrarResposta(resp.status, resp.data);
     if (resp.ok) {
         limparForm();
         listar();
@@ -133,8 +123,8 @@ function editar(aluno) {
 async function excluir(id, nome) {
     if (!confirm("Excluir o aluno " + nome + " (id " + id + ")?")) return;
     const resp = await apiAuth("/alunos/" + id, { method: "DELETE" });
+    mostrarResposta(resp.status, resp.data);
     if (resp.ok) listar();
-    else alert(resp.data.message || "Erro ao excluir");
 }
 
 function renderAlunos(lista) {
@@ -156,37 +146,33 @@ function renderAlunos(lista) {
 }
 
 async function listar() {
-    const { ok, data } = await apiAuth("/alunos");
-    if (!ok) { $("tabelaWrap").innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
-    renderAlunos(data);
+    const { status, ok, data } = await apiAuth("/alunos");
+    mostrarResposta(status, data);
+    if (ok) renderAlunos(data);
 }
 
 async function buscarPorId() {
     const id = $("buscaId").value;
-    if (!id) { showMsg($("formMsg"), "Informe um id para buscar.", false); return; }
-    const { ok, data } = await apiAuth("/alunos/" + id);
-    if (!ok) { $("tabelaWrap").innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
-    renderAlunos([data]);
-}
-
-function editarPorId(id) {
-    const aluno = (window.__alunos || []).find(a => a.id === id);
-    if (aluno) editar(aluno);
+    if (!id) { mostrarResposta(0, { erro: "Informe um id para buscar." }); return; }
+    const { status, ok, data } = await apiAuth("/alunos/" + id);
+    mostrarResposta(status, data);
+    if (ok) renderAlunos([data]);
+    else $("tabelaWrap").innerHTML = `<p class="msg">Nenhum aluno para mostrar.</p>`;
 }
 
 async function verMedias() {
-    const { ok, data } = await apiAuth("/alunos/medias");
-    const wrap = $("tabelaWrap");
-    if (!ok) { wrap.innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
+    const { status, ok, data } = await apiAuth("/alunos/medias");
+    mostrarResposta(status, data);
+    if (!ok) return;
     let html = `<table><thead><tr><th>nome</th><th>média</th></tr></thead><tbody>`;
     data.forEach(m => html += `<tr><td>${m.nome}</td><td>${m.media}</td></tr>`);
-    wrap.innerHTML = html + "</tbody></table>";
+    $("tabelaWrap").innerHTML = html + "</tbody></table>";
 }
 
 async function verAprovados() {
-    const { ok, data } = await apiAuth("/alunos/aprovados");
-    const wrap = $("tabelaWrap");
-    if (!ok) { wrap.innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
+    const { status, ok, data } = await apiAuth("/alunos/aprovados");
+    mostrarResposta(status, data);
+    if (!ok) return;
     let html = `<table><thead><tr><th>nome</th><th>status</th></tr></thead><tbody>`;
     data.forEach(a => {
         const pill = a.status === "aprovado"
@@ -194,7 +180,12 @@ async function verAprovados() {
             : `<span class="pill pill-no">reprovado</span>`;
         html += `<tr><td>${a.nome}</td><td>${pill}</td></tr>`;
     });
-    wrap.innerHTML = html + "</tbody></table>";
+    $("tabelaWrap").innerHTML = html + "</tbody></table>";
+}
+
+function editarPorId(id) {
+    const aluno = (window.__alunos || []).find(a => a.id === id);
+    if (aluno) editar(aluno);
 }
 
 $("btnRegister").onclick = registrar;

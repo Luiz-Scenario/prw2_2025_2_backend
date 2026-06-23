@@ -153,3 +153,18 @@ th { background: #f0f4f8; }
 .input-id { max-width: 90px; }
 
 .hint .rota { font-size: 11px; }
+
+#respostaJson {
+    margin: 0;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    background: #0f2230;
+    color: #d9e2ec;
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 48px;
+}
