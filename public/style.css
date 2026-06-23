@@ -99,9 +99,12 @@ th { background: #f0f4f8; }
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 16px;
-    margin-right: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--verde-escuro);
+    margin-right: 12px;
 }
+.acoes button:hover { text-decoration: underline; }
 
 .pill {
     padding: 3px 10px;

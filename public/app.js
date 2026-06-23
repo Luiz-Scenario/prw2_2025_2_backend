@@ -137,8 +137,8 @@ async function listar() {
             <td>${a.id}</td><td>${a.nome}</td><td>${a.ra}</td>
             <td>${a.nota1}</td><td>${a.nota2}</td>
             <td class="acoes">
-                <button title="Editar" onclick='editarPorId(${a.id})'>✏️</button>
-                <button title="Excluir" onclick='excluir(${a.id})'>🗑️</button>
+                <button onclick='editarPorId(${a.id})'>Editar</button>
+                <button onclick='excluir(${a.id})'>Excluir</button>
             </td></tr>`;
     });
     html += "</tbody></table>";
