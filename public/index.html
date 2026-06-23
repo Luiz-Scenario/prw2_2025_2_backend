@@ -19,16 +19,26 @@
                 <input id="authUser" type="text" placeholder="Usuário (e-mail)" />
                 <input id="authPass" type="password" placeholder="Senha" />
             </div>
-            <div class="botoes">
-                <button id="btnRegister" class="btn btn-secondary">Registrar</button>
-                <button id="btnLogin" class="btn btn-primary">Login</button>
-                <button id="btnLogout" class="btn btn-ghost">Sair</button>
+            <div class="linhas-rota">
+                <div class="linha-rota">
+                    <button id="btnRegister" class="btn btn-secondary">Registrar usuário</button>
+                    <code class="rota">POST /register</code>
+                </div>
+                <div class="linha-rota">
+                    <button id="btnLogin" class="btn btn-primary">Fazer login</button>
+                    <code class="rota">POST /login</code>
+                </div>
+                <div class="linha-rota">
+                    <button id="btnLogout" class="btn btn-ghost">Sair</button>
+                    <code class="rota rota-local">apenas local</code>
+                </div>
             </div>
             <p id="authMsg" class="msg"></p>
         </section>
 
-        <section class="card">
+        <section class="card" id="cardForm">
             <h2 id="formTitulo">Cadastrar aluno</h2>
+            <p class="hint" id="formHint">Preencha os campos e clique em "Salvar aluno" para cadastrar. Para alterar, clique em "Editar" na tabela de resultados.</p>
             <div class="form-grid">
                 <input id="alId" type="number" placeholder="id (inteiro)" />
                 <input id="alNome" type="text" placeholder="nome" />
@@ -36,8 +46,9 @@
                 <input id="alNota1" type="number" step="0.1" placeholder="nota1" />
                 <input id="alNota2" type="number" step="0.1" placeholder="nota2" />
             </div>
-            <div class="botoes">
+            <div class="linha-rota">
                 <button id="btnSalvar" class="btn btn-primary">Salvar aluno</button>
+                <code class="rota" id="rotaSalvar">POST /alunos</code>
                 <button id="btnLimpar" class="btn btn-ghost">Limpar</button>
             </div>
             <p id="formMsg" class="msg"></p>
@@ -45,17 +56,32 @@
 
         <section class="card">
             <h2>Consultas</h2>
-            <div class="botoes">
-                <button id="btnListar" class="btn btn-secondary">Listar alunos</button>
-                <button id="btnMedias" class="btn btn-secondary">Médias</button>
-                <button id="btnAprovados" class="btn btn-secondary">Aprovados</button>
+            <div class="linhas-rota">
+                <div class="linha-rota">
+                    <button id="btnListar" class="btn btn-secondary">Listar todos os alunos</button>
+                    <code class="rota">GET /alunos</code>
+                </div>
+                <div class="linha-rota">
+                    <button id="btnMedias" class="btn btn-secondary">Ver médias das notas</button>
+                    <code class="rota">GET /alunos/medias</code>
+                </div>
+                <div class="linha-rota">
+                    <button id="btnAprovados" class="btn btn-secondary">Ver aprovados / reprovados</button>
+                    <code class="rota">GET /alunos/aprovados</code>
+                </div>
+                <div class="linha-rota">
+                    <input id="buscaId" type="number" placeholder="id" class="input-id" />
+                    <button id="btnBuscarId" class="btn btn-secondary">Encontrar aluno por id</button>
+                    <code class="rota">GET /alunos/:id</code>
+                </div>
             </div>
         </section>
 
         <section class="card">
             <h2>Resultado</h2>
+            <p class="hint">Na tabela abaixo: "Editar" usa <code class="rota">PUT /alunos/:id</code> e "Excluir" usa <code class="rota">DELETE /alunos/:id</code>.</p>
             <div id="tabelaWrap" class="tabela-wrap">
-                <p class="msg">Faça login e clique em "Listar alunos".</p>
+                <p class="msg">Faça login e clique em "Listar todos os alunos".</p>
             </div>
         </section>
     </main>

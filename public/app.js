@@ -80,7 +80,12 @@ function lerFormAluno() {
 function limparForm() {
     ["alId", "alNome", "alRa", "alNota1", "alNota2"].forEach(id => $(id).value = "");
     $("formTitulo").textContent = "Cadastrar aluno";
+    $("formHint").textContent = 'Preencha os campos e clique em "Salvar aluno" para cadastrar. Para alterar, clique em "Editar" na tabela de resultados.';
+    $("btnSalvar").textContent = "Salvar aluno";
+    $("rotaSalvar").textContent = "POST /alunos";
     $("btnSalvar").dataset.modo = "criar";
+    $("alId").disabled = false;
+    $("cardForm").classList.remove("form-edicao");
     showMsg($("formMsg"), "");
 }
 
@@ -115,35 +120,53 @@ function editar(aluno) {
     $("alNota1").value = aluno.nota1;
     $("alNota2").value = aluno.nota2;
     $("formTitulo").textContent = "Editar aluno #" + aluno.id;
+    $("formHint").textContent = 'Altere os campos desejados e clique em "Atualizar aluno". O id não pode ser alterado. Use "Limpar" para cancelar.';
+    $("btnSalvar").textContent = "Atualizar aluno";
+    $("rotaSalvar").textContent = "PUT /alunos/:id";
     $("btnSalvar").dataset.modo = "editar";
+    $("alId").disabled = true;
+    $("cardForm").classList.add("form-edicao");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("alNome").focus();
 }
 
-async function excluir(id) {
+async function excluir(id, nome) {
+    if (!confirm("Excluir o aluno " + nome + " (id " + id + ")?")) return;
     const resp = await apiAuth("/alunos/" + id, { method: "DELETE" });
     if (resp.ok) listar();
     else alert(resp.data.message || "Erro ao excluir");
 }
 
-async function listar() {
-    const { ok, data } = await apiAuth("/alunos");
-    const wrap = $("tabelaWrap");
-    if (!ok) { wrap.innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
-
+function renderAlunos(lista) {
     let html = `<table><thead><tr>
         <th>id</th><th>nome</th><th>ra</th><th>nota1</th><th>nota2</th><th>ações</th>
         </tr></thead><tbody>`;
-    data.forEach(a => {
+    lista.forEach(a => {
         html += `<tr>
             <td>${a.id}</td><td>${a.nome}</td><td>${a.ra}</td>
             <td>${a.nota1}</td><td>${a.nota2}</td>
             <td class="acoes">
-                <button onclick='editarPorId(${a.id})'>Editar</button>
-                <button onclick='excluir(${a.id})'>Excluir</button>
+                <button class="mini mini-edit" onclick='editarPorId(${a.id})'>Editar</button>
+                <button class="mini mini-del" onclick='excluir(${a.id}, "${a.nome}")'>Excluir</button>
             </td></tr>`;
     });
     html += "</tbody></table>";
-    wrap.innerHTML = html;
-    window.__alunos = data;
+    $("tabelaWrap").innerHTML = html;
+    window.__alunos = lista;
+}
+
+async function listar() {
+    const { ok, data } = await apiAuth("/alunos");
+    if (!ok) { $("tabelaWrap").innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
+    renderAlunos(data);
+}
+
+async function buscarPorId() {
+    const id = $("buscaId").value;
+    if (!id) { showMsg($("formMsg"), "Informe um id para buscar.", false); return; }
+    const { ok, data } = await apiAuth("/alunos/" + id);
+    if (!ok) { $("tabelaWrap").innerHTML = `<p class="msg err">${data.message || "Erro"}</p>`; return; }
+    renderAlunos([data]);
 }
 
 function editarPorId(id) {
@@ -182,5 +205,6 @@ $("btnLimpar").onclick = limparForm;
 $("btnListar").onclick = listar;
 $("btnMedias").onclick = verMedias;
 $("btnAprovados").onclick = verAprovados;
+$("btnBuscarId").onclick = buscarPorId;
 
 setStatus();

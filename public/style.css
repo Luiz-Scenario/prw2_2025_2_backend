@@ -95,16 +95,33 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: 10px; border-bottom: 1px solid var(--borda); text-align: left; }
 th { background: #f0f4f8; }
 
-.acoes button {
-    border: none;
-    background: none;
-    cursor: pointer;
+.acoes { white-space: nowrap; }
+
+.mini {
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    padding: 5px 12px;
     font-size: 13px;
     font-weight: 600;
-    color: var(--verde-escuro);
-    margin-right: 12px;
+    cursor: pointer;
+    margin-right: 6px;
+    background: #fff;
 }
-.acoes button:hover { text-decoration: underline; }
+.mini-edit { color: var(--verde-escuro); border-color: var(--verde); }
+.mini-edit:hover { background: #e7f3ef; }
+.mini-del { color: var(--vermelho); border-color: #e9b9b3; }
+.mini-del:hover { background: #fdecea; }
+
+.hint {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: #627d98;
+}
+
+.form-edicao {
+    border: 1px solid var(--verde);
+    box-shadow: 0 0 0 3px rgba(31,138,112,.12);
+}
 
 .pill {
     padding: 3px 10px;
@@ -114,3 +131,25 @@ th { background: #f0f4f8; }
 }
 .pill-ok  { background: #d5f5e3; color: #1e8449; }
 .pill-no  { background: #fdecea; color: var(--vermelho); }
+
+.linhas-rota { display: grid; gap: 10px; }
+.linha-rota {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rota {
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    background: #eef2f6;
+    color: #486581;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+.rota-local { background: #f0f0f0; color: #9aa5b1; }
+
+.input-id { max-width: 90px; }
+
+.hint .rota { font-size: 11px; }
